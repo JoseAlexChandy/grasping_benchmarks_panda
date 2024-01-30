@@ -1,29 +1,44 @@
-import os
+from pathlib import Path
 import setuptools
 
 
-setup_py_dir = os.path.dirname(os.path.realpath(__file__))
-need_files = []
-datadir = "grasping_benchmarks"
-
-hh = setup_py_dir + "/" + datadir
-
-for root, dirs, files in os.walk(hh):
-  for fn in files:
-    ext = os.path.splitext(fn)[1][1:]
-    if ext and ext in 'xml yaml ini'.split(
-    ):
-      fn = root + "/" + fn
-      need_files.append(fn[1 + len(hh):])
-
+# get all files in ./grasping_benchmarks which end with a config file ending
+config_file_endings = [".xml", ".yaml", ".ini"]
+config_files = filter(
+    lambda f: f in config_file_endings,
+    (Path(__file__).parent / "grasping_benchmarks").rglob("*"),
+)
+config_files = list(config_files)
 
 setuptools.setup(
     name="grasping-benchmarks",
     version="0.0.0",
-    author="elena rampone",
-    author_email="elena.rampone@iit.it",
+    # author="elena rampone",
+    # author_email="elena.rampone@iit.it",
     packages=setuptools.find_packages(),
-    package_data={'grasping_benchmarks': need_files},
-    python_requires='>=3',
-    install_requires=['scipy', 'numpy', 'pyyaml'],
+    package_data={"grasping_benchmarks": config_files},
+    python_requires=">=3",
+    install_requires=[
+        "numpy",
+        "ros_numpy @ git+https://github.com/m0dd0/ros_numpy@master",  # the original version is outdated and does not support new version of numpy
+        "nptyping",
+    ],
+    extras_require={
+        "dev": ["black", "pylint"],
+        "grconvnet": [
+            "pyyaml",
+            "numpy",
+            "matplotlib",
+            # "numpy<1.24",
+            "rosnumpy",
+            "scipy",
+            "torch",
+            "nptyping",
+            "Pillow",
+            "rospkg",
+        ],
+        "contactgraspnet": [
+            # "contact_graspnet @ git+https://github.com/m0dd0/ContactGraspnetBenchmark@develop",
+        ],
+    },
 )
