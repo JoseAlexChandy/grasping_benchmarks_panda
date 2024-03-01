@@ -33,11 +33,18 @@ superquadrics:
 
 contactgraspnet:
 	docker build --no-cache --rm \
-		--build-arg from=tensorflow/tensorflow:2.2.3-gpu-py3 \
+		--build-arg PARENT_IMAGE=nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04 \
+		--build-arg CATKIN_WS_DIR=/home/catkin_ws \
+		--build-arg BENCHMARK_REPO=https://github.com/m0dd0/grasping-benchmarks-panda.git \
+		--build-arg BENCHMARK_BRANCH=develop \
 		--tag $(USER_NAME)/benchmark_contactgraspnet:latest \
 		../contact_graspnet/
 grconvnet:
-	DOCKER_BUILDKIT=1 docker build --ssh default --rm \
-	    --build-arg from=nvidia/cuda:11.7.0-runtime-ubuntu18.04 \
-	    --tag $(USER_NAME)/benchmark_grconvnet:latest \
-	    ../grconvnet/
+	docker build --no-cache --rm \
+		--build-arg CATKIN_WS_DIR=/home/catkin_ws \
+		--build-arg BENCHMARK_REPO=https://github.com/m0dd0/grasping-benchmarks-panda.git \
+		--build-arg BENCHMARK_BRANCH=develop \
+		--build-arg GRCONVNET_REPO=https://github.com/m0dd0/GrConvNetBenchmark.git \
+		--build-arg GRCONVNET_BRANCH=develop \
+		--tag $(USER_NAME)/benchmark_grconvnet:latest \
+		../grconvnet/

@@ -53,7 +53,7 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.
 # install ros packages
 RUN apt-get update && \ 
     apt-get install -y --no-install-recommends \
-    ros-noetic-desktop-full \
+    ros-noetic-desktop \
     python3-catkin-tools && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -U rosdep && \
@@ -82,6 +82,4 @@ RUN mkdir -p /home/catkin_ws/src && \
 
 ENV GRASP_BENCHMARK_CONTACT true
 
-COPY ./entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["bash"]
+CMD ["bash", "-c", "source /home/catkin_ws/devel/setup.bash && roslaunch grasping_benchmarks_ros grasp_planning_benchmark.launch"]
