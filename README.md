@@ -14,8 +14,8 @@ This fork allows the use of the latest version of Dexnet. It also allows Graspne
 ## Instructions:
 1. Git-clone this fork:
 ```
-git clone https://github.com/PabloLopezCustodio/grasping-benchmarks-panda-1.git
-cd grasping-benchmarks-panda-1
+git clone https://github.com/JoseAlexChandy/grasping_benchmarks_panda.git
+cd grasping_benchmarks_panda
 ```
 2. set SSH_AUTH_SOCK:
 ```
@@ -43,7 +43,7 @@ bash run.sh <user_name> dexnet_container <user_name>/benchmark_dexnet
 5. Inside the container source the workspace and fix the IP of your ROS master if it's different to the local machine. Finally, launch the service:
 ```
 source /workspace/catkin_ws/devel/setup.bash
-export ROS_MASTER_URI=http://10.0.2.3:11311
-export ROS_IP=10.0.2.11
+export ROS_MASTER_URI=http://172.22.3.6:11311
+export ROS_IP=172.22.3.8
 roslaunch grasping_benchmarks_ros grasp_planning_benchmark.launch
 ```
